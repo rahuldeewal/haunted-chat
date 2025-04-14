@@ -1,125 +1,144 @@
-<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html><html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ghost Chat</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostGPT – डरावनी बातचीत</title>
   <style>
-    body {
-      background: black;
-      color: white;
-      font-family: monospace;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    h1 {
-      text-align: center;
-      color: #00ffcc;
-      text-shadow: 0 0 10px #00ffcc;
-      margin: 10px 0;
-    }
-
-    #chatBox {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .message {
-      margin: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      max-width: 70%;
-    }
-
-    .user {
-      background: #222;
-      align-self: flex-end;
-    }
-
-    .ghost {
-      background: #111;
-      border: 1px solid red;
-      color: red;
-      align-self: flex-start;
-    }
-
-    #inputArea {
-      display: flex;
-      padding: 10px;
-      background: #111;
-    }
-
-    #msgInput {
-      flex: 1;
-      padding: 10px;
-      background: #222;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-
-    button {
-      padding: 10px;
-      margin-left: 5px;
-      background: green;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
+    body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 20px; }
+    #chatBox { border: 1px solid #0f0; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; }
+    #chatInput { width: 100%; padding: 10px; background: #111; color: #0f0; border: none; }
+    #ghostModel { width: 100px; height: 100px; background: url('ghost.png') no-repeat center/cover; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h1>Ghost Chat</h1>
-
+  <h1>GhostGPT – डरावनी बातचीत</h1>
   <div id="chatBox"></div>
+  <input type="text" id="chatInput" placeholder="कुछ लिखिए...">
+  <div id="ghostModel"></div>  <script>
+    class GhostGPT {
+      constructor() {
+        this.memory = new Map();
+        this.conversationHistory = [];
+        this.personalityTraits = {
+          tone: "mysterious",
+          humor: "dark",
+          knowledgeBase: "paranormal"
+        };
+      }
 
-  <div id="inputArea">
-    <input type="text" id="msgInput" placeholder="Kuch likho..." />
-    <button onclick="sendMessage()">Bhejo</button>
-  </div>
+      async understand(input) {
+        const tokens = this.tokenize(input);
+        const tagged = this.posTag(tokens);
+        const intent = await this.detectIntent(input);
+        const sentiment = this.analyzeSentiment(input);
+        const context = this.getContext();
+        return { intent, sentiment, context, tagged };
+      }
 
-  <script>
-    const chatBox = document.getElementById("chatBox");
-    const msgInput = document.getElementById("msgInput");
+      async generateResponse(input) {
+        const analysis = await this.understand(input);
+        const memory = this.checkMemory(analysis);
+        if(memory) return this.applyTone(memory);
 
-    function sendMessage() {
-      const msg = msgInput.value.trim();
-      if (!msg) return;
+        const responseType = this.decideResponseType(analysis);
+        let response;
 
-      addMessage(msg, "user");
-      msgInput.value = "";
+        switch(responseType) {
+          case 'factual':
+            response = this.accessKnowledgeBase(analysis);
+            break;
+          case 'philosophical':
+            response = this.generatePhilosophical(analysis);
+            break;
+          case 'emotional':
+            response = this.respondEmotionally(analysis);
+            break;
+          default:
+            response = this.defaultResponse(analysis);
+        }
 
-      setTimeout(() => {
-        const reply = ghostReply(msg);
-        addMessage(reply, "ghost");
-      }, 1500);
+        this.updateContext(analysis, response);
+        return this.addSupernaturalElements(response);
+      }
+
+      tokenize(input) {
+        return input.split(' ');
+      }
+
+      posTag(tokens) {
+        const tags = { "क्यों": "WH-question", "कैसे": "WH-method", "भूत": "entity" };
+        return tokens.map(token => ({ word: token, tag: tags[token] || "NN" }));
+      }
+
+      async detectIntent(input) {
+        return { question: input.includes("?"), greeting: input.includes("नमस्ते") };
+      }
+
+      analyzeSentiment(text) {
+        const positiveWords = ["अच्छा", "मजा", "प्यार"];
+        const negativeWords = ["डर", "मौत", "खतरा"];
+        const polarity = this.calculatePolarity(text, positiveWords, negativeWords);
+        return { polarity, intensity: Math.random() * 0.5 + 0.5 };
+      }
+
+      calculatePolarity(text, positive, negative) {
+        let score = 0;
+        positive.forEach(word => { if (text.includes(word)) score += 1; });
+        negative.forEach(word => { if (text.includes(word)) score -= 1; });
+        return score;
+      }
+
+      getContext() { return this.conversationHistory.slice(-3); }
+      checkMemory() { return null; }
+      applyTone(response) { return response; }
+      accessKnowledgeBase() { return "कुछ अजीब सी जानकारी मिल रही है..."; }
+      generatePhilosophical() { return "कभी-कभी सवाल खुद जवाब होते हैं..."; }
+      respondEmotionally() { return "मैं तुम्हारी भावना समझ रहा हूँ..."; }
+      defaultResponse() { return "मैं समझ नहीं पाया, मगर कुछ अजीब महसूस हो रहा है..."; }
+
+      updateContext(analysis, response) {
+        this.conversationHistory.push({ analysis, response });
+      }
+
+      decideResponseType(analysis) {
+        if(analysis.intent.question) return 'factual';
+        if(analysis.sentiment.intensity > 0.7) return 'emotional';
+        if(this.conversationHistory.length > 3) return 'philosophical';
+        return 'default';
+      }
+
+      addSupernaturalElements(text) {
+        const transformations = [
+          str => str.replace(/\./g, '...'),
+          str => str + ' 👻',
+          str => str.split(' ').reverse().join(' '),
+          str => str.toLowerCase(),
+          str => this.addWhispers(str)
+        ];
+        return transformations[Math.floor(Math.random() * transformations.length)](text);
+      }
+
+      addWhispers(str) {
+        return str.split(' ').map(word => Math.random() > 0.5 ? word + '...' : word).join(' ');
+      }
     }
 
-    function addMessage(text, type) {
-      const msgDiv = document.createElement("div");
-      msgDiv.className = `message ${type}`;
-      msgDiv.innerText = text;
-      chatBox.appendChild(msgDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+    const ghost = new GhostGPT();
 
-    function ghostReply(msg) {
-      const replies = [
-        "Tum yahaan kaise aaye?",
-        "Main tumhara intezaar kar raha tha...",
-        "Is chat se nikal paoge nahi!",
-        "Naam batao... asli wala!",
-        "Hahaha... darr lag raha hai?"
-      ];
-      return replies[Math.floor(Math.random() * replies.length)];
+    document.getElementById('chatInput').addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        const msg = e.target.value;
+        const response = await ghost.generateResponse(msg);
+        document.getElementById('chatBox').innerHTML += `<div><b>तुम:</b> ${msg}</div><div><b>भूत:</b> ${response}</div>`;
+        e.target.value = '';
+        animateGhost();
+      }
+    });
+
+    function animateGhost() {
+      const ghostModel = document.getElementById('ghostModel');
+      ghostModel.style.animation = "shake 0.5s infinite alternate";
+      setTimeout(() => ghostModel.style.animation = "none", 2000);
     }
-  </script>
-</body>
+  </script></body>
 </html>
