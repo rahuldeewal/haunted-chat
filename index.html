@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,23 +7,18 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <canvas class="particles"></canvas>
-  
   <div class="container">
-    <h1 class="glitch">Ghost Chat</h1>
+    <h1>Ghost Chat</h1>
     <p>Apna naam daalo... agar himmat ho to!</p>
     <input type="text" id="nameInput" placeholder="Tumhara Naam..." />
     <button onclick="startChat()">Shuru Karo</button>
 
-    <div id="chatBox">
-      <div id="messageContainer"></div>
+    <div id="chatBox" class="hidden">
+      <p id="ghostMessage"></p>
     </div>
   </div>
 
-  <audio id="whisper" src="https://www.soundjay.com/human/sounds/whisper-1.mp3"></audio>
-  <audio id="door" src="https://www.soundjay.com/misc/sounds/door-creak-1.mp3"></audio>
-  <audio id="heartbeat" src="https://www.soundjay.com/human/sounds/heartbeat-01.mp3"></audio>
-  
+  <audio id="creepySound" src="https://www.soundjay.com/human/sounds/whisper-1.mp3" preload="auto"></audio>
   <script src="script.js"></script>
 </body>
 </html>
