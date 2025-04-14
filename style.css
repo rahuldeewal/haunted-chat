@@ -1,110 +1,60 @@
-:root {
-  --glow-color: rgba(46, 214, 115, 0.8);
-  --text-shadow: 0 0 10px var(--glow-color);
-}
-
 body {
-  background: #0a0a0a;
-  color: #fff;
+  margin: 0;
   font-family: 'Courier New', monospace;
-  overflow: hidden;
-  position: relative;
-  transition: background-color 0.5s ease;
-}
-
-.container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   text-align: center;
-  position: relative;
-  z-index: 2;
+  flex-direction: column;
 }
 
 h1 {
-  font-size: 3rem;
-  text-shadow: var(--text-shadow);
-  animation: flicker 3s infinite alternate;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+  font-size: 48px;
+  margin-bottom: 10px;
 }
 
-#nameInput, button {
-  padding: 0.8rem 1.5rem;
-  margin: 1rem;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid var(--glow-color);
-  color: #fff;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
+p {
+  font-size: 18px;
+  margin: 10px 0;
 }
 
-button:hover {
-  background: var(--glow-color);
+input {
+  padding: 10px;
+  font-size: 18px;
+  background: #111;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-top: 15px;
+  width: 250px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background: black;
+  color: white;
+  border: 1px solid green;
+  border-radius: 5px;
   cursor: pointer;
 }
 
+button:hover {
+  background: green;
+  color: black;
+}
+
 #chatBox {
-  margin-top: 2rem;
-  opacity: 0;
-  transition: opacity 1s ease;
+  margin-top: 30px;
+  font-size: 24px;
 }
 
-.visible {
-  opacity: 1 !important;
+.hidden {
+  display: none;
 }
-
-.ghost-typing {
-  display: inline-block;
-  position: relative;
-  margin: 1rem 0;
-  color: var(--glow-color);
-}
-
-.ghost-typing::after {
-  content: '|';
-  animation: blink 1s infinite;
-  position: absolute;
-  right: -10px;
-}
-
-.message {
-  font-size: 1.4rem;
-  margin: 1rem 0;
-  padding: 1rem;
-  border-left: 3px solid var(--glow-color);
-  text-align: left;
-  animation: slideIn 0.5s ease;
-}
-
-.glitch {
-  animation: glitch 1s infinite;
-}
-
-@keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-    text-shadow: var(--text-shadow);
-  }
-  20%, 24%, 55% {
-    text-shadow: none;
-  }
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-@keyframes slideIn {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes glitch {
-  2% { transform: translate(2px, 0); }
-  4% { transform: translate(-1px, 0); }
-  96% { transform: translate(0, 0); }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-10px); }
-  40%, 80% { transform: translateX(10px); }
-  }
