@@ -4,21 +4,126 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ghost Chat</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc; }
+    }
+
+    p#typing-text {
+      font-size: 1.2em;
+      margin: 20px 0;
+      height: 50px;
+    }
+
+    input {
+      padding: 12px;
+      border: 1px solid white;
+      border-radius: 5px;
+      font-size: 1em;
+      background-color: #111;
+      color: white;
+      width: 80%;
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: green;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: darkgreen;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #111;
+      padding: 30px;
+      border: 2px solid red;
+      color: red;
+      font-size: 1.5em;
+      z-index: 999;
+    }
+
+    .popup.show {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Ghost Chat</h1>
-    <p>Apna naam daalo... agar himmat ho to!</p>
-    <input type="text" id="nameInput" placeholder="Tumhara Naam..." />
-    <button onclick="startChat()">Shuru Karo</button>
+  <h1>Ghost Chat</h1>
+  <p id="typing-text"></p>
 
-    <div id="chatBox" class="hidden">
-      <p id="ghostMessage"></p>
-    </div>
-  </div>
+  <input type="text" placeholder="Tumhara Naam..." id="nameInput" />
+  <br />
+  <button onclick="startGhost()">Shuru Karo</button>
 
-  <audio id="creepySound" src="https://www.soundjay.com/human/sounds/whisper-1.mp3" preload="auto"></audio>
-  <script src="script.js"></script>
+  <div class="popup" id="ghostPopup">Tumhein bula liya gaya hai...</div>
+
+  <audio id="ghostSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+
+  <script>
+    // Typing effect
+    const text = "Apna naam daalo... agar himmat ho to!";
+    let i = 0;
+    const speed = 80;
+
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typing-text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+
+    typeWriter();
+
+    function startGhost() {
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) {
+        alert("Naam daalna padega!");
+        return;
+      }
+
+      document.getElementById("ghostSound").play();
+      const popup = document.getElementById("ghostPopup");
+      popup.classList.add("show");
+
+      setTimeout(() => {
+        popup.innerText = `Welcome ${name}... Tum ab wapas nahi ja sakte!`;
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
