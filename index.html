@@ -6,123 +6,119 @@
   <title>Ghost Chat</title>
   <style>
     body {
+      background: black;
+      color: white;
+      font-family: monospace;
       margin: 0;
       padding: 0;
-      background-color: black;
-      color: white;
-      font-family: 'Courier New', monospace;
-      text-align: center;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       height: 100vh;
     }
 
     h1 {
-      font-size: 3em;
+      text-align: center;
       color: #00ffcc;
-      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
-      animation: glow 2s infinite alternate;
+      text-shadow: 0 0 10px #00ffcc;
+      margin: 10px 0;
     }
 
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #00ffcc; }
-      to { text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc; }
+    #chatBox {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
 
-    p#typing-text {
-      font-size: 1.2em;
-      margin: 20px 0;
-      height: 50px;
+    .message {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 70%;
     }
 
-    input {
-      padding: 12px;
-      border: 1px solid white;
-      border-radius: 5px;
-      font-size: 1em;
-      background-color: #111;
+    .user {
+      background: #222;
+      align-self: flex-end;
+    }
+
+    .ghost {
+      background: #111;
+      border: 1px solid red;
+      color: red;
+      align-self: flex-start;
+    }
+
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background: #111;
+    }
+
+    #msgInput {
+      flex: 1;
+      padding: 10px;
+      background: #222;
       color: white;
-      width: 80%;
-      max-width: 300px;
-      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
     }
 
     button {
-      background-color: green;
+      padding: 10px;
+      margin-left: 5px;
+      background: green;
       color: white;
-      padding: 12px 24px;
-      font-size: 1em;
       border: none;
       border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: darkgreen;
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #111;
-      padding: 30px;
-      border: 2px solid red;
-      color: red;
-      font-size: 1.5em;
-      z-index: 999;
-    }
-
-    .popup.show {
-      display: block;
     }
   </style>
 </head>
 <body>
   <h1>Ghost Chat</h1>
-  <p id="typing-text"></p>
 
-  <input type="text" placeholder="Tumhara Naam..." id="nameInput" />
-  <br />
-  <button onclick="startGhost()">Shuru Karo</button>
+  <div id="chatBox"></div>
 
-  <div class="popup" id="ghostPopup">Tumhein bula liya gaya hai...</div>
-
-  <audio id="ghostSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+  <div id="inputArea">
+    <input type="text" id="msgInput" placeholder="Kuch likho..." />
+    <button onclick="sendMessage()">Bhejo</button>
+  </div>
 
   <script>
-    // Typing effect
-    const text = "Apna naam daalo... agar himmat ho to!";
-    let i = 0;
-    const speed = 80;
+    const chatBox = document.getElementById("chatBox");
+    const msgInput = document.getElementById("msgInput");
 
-    function typeWriter() {
-      if (i < text.length) {
-        document.getElementById("typing-text").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
-      }
-    }
+    function sendMessage() {
+      const msg = msgInput.value.trim();
+      if (!msg) return;
 
-    typeWriter();
-
-    function startGhost() {
-      const name = document.getElementById("nameInput").value.trim();
-      if (!name) {
-        alert("Naam daalna padega!");
-        return;
-      }
-
-      document.getElementById("ghostSound").play();
-      const popup = document.getElementById("ghostPopup");
-      popup.classList.add("show");
+      addMessage(msg, "user");
+      msgInput.value = "";
 
       setTimeout(() => {
-        popup.innerText = `Welcome ${name}... Tum ab wapas nahi ja sakte!`;
-      }, 3000);
+        const reply = ghostReply(msg);
+        addMessage(reply, "ghost");
+      }, 1500);
+    }
+
+    function addMessage(text, type) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `message ${type}`;
+      msgDiv.innerText = text;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function ghostReply(msg) {
+      const replies = [
+        "Tum yahaan kaise aaye?",
+        "Main tumhara intezaar kar raha tha...",
+        "Is chat se nikal paoge nahi!",
+        "Naam batao... asli wala!",
+        "Hahaha... darr lag raha hai?"
+      ];
+      return replies[Math.floor(Math.random() * replies.length)];
     }
   </script>
 </body>
